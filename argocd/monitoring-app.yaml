@@ -6,7 +6,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/abirelhajahmed/Gitops-project.git
-    path: monitoring
+    path: monitoring/k8s-prometheus/
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
