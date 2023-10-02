@@ -1,20 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: my-app
+  name: monitoring
 spec:
   project: default
   source:
     repoURL: https://github.com/abirelhajahmed/Gitops-project.git
-    path: app
+    path: monitoring
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
-    createNamespace: true  # ArgoCD will create the namespace if it doesn't exist
+    namespace: monitoring
+    createNamespace: true  # ArgoCD will create the 'monitoring' namespace if it doesn't exist
   syncPolicy:
     automated:
       prune: true
-      selfHeal: true  # Enable self-healing
+      selfHeal: true  # Enable self-healing for the monitoring stack
+
 
 
