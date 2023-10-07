@@ -1,21 +1,38 @@
 apiVersion: argoproj.io/v1alpha1
-kind: Application
+kind: ApplicationSet
 metadata:
-  name: monitoring
+  name: monitoring-components
 spec:
-  project: default
-  source:
-    repoURL: https://github.com/abirelhajahmed/Gitops-project.git
-    path: monitoring/.
-    targetRevision: HEAD
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: monitoring
-    createNamespace: true  # ArgoCD will create the 'monitoring' namespace if it doesn't exist
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true  # Enable self-healing for the monitoring stack
+  generators:
+    - git:
+        repoURL: https://github.com/abirelhajahmed/Gitops-project.git
+        revision: HEAD
+        paths:
+          - monitoring/grafana
+          - monitoring/prometheus
+          - monitoring/node-exporter
+          - monitoring/kube-state-metrics
+  template:
+    metadata:
+      name: {{ .name }}
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/abirelhajahmed/Gitops-project.git
+        path: monitoring/{{ .name }}
+        targetRevision: HEAD
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: monitoring
+        createNamespace: true
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+
+
+
+
 
 
 
